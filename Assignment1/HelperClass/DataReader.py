@@ -51,6 +51,7 @@ class DataReader(object):
         self.yNorm[0, 0] = min_value
         self.yNorm[0, 1] = max_value - min_value
         self.yTrain = (self.yRaw - self.yNorm[0, 0]) / self.yNorm[0, 1]
+        print("Y shape is ", self.yTrain.shape)
 
     def getSingleTrainSample(self, iteration):
         return self.xTrain[iteration], self.yTrain[iteration]

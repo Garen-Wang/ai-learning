@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from pathlib import Path
 
 
@@ -14,6 +15,7 @@ class DataReader(object):
         self.yNorm = None
 
     def readData(self):
+        print(self.train_file_name)
         train_file = Path(self.train_file_name)
         if train_file.exists():
             data = np.load(self.train_file_name)
@@ -24,6 +26,7 @@ class DataReader(object):
             self.yTrain = self.yRaw
         else:
             raise Exception('Cannot find train file!')
+
 
     def getSingleTrainSample(self, iteration):
         return self.xTrain[iteration], self.yTrain[iteration]
@@ -50,6 +53,7 @@ class DataReader(object):
     # update here
 
     def normalizeX(self):
+        print(self.xRaw)
         xNew = np.zeros(self.xRaw.shape)
         num_feature = self.xRaw.shape[1]
         self.xNorm = np.zeros((num_feature, 2))

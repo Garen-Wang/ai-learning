@@ -39,7 +39,7 @@ def draw_predicate_data(neural, reader):
 if __name__ == '__main__':
     reader = DataReader(file_name)
     reader.readData()
-    params = HyperParameters(2, 1, eta=0.1, max_epoch=1000, batch_size=10, eps=1e-3, net_type=NetType.BinaryClassifier)
+    params = HyperParameters(2, 1, eta=0.1, max_epoch=10000, batch_size=10, eps=1e-4, net_type=NetType.BinaryClassifier)
     neural = NeuralNet(params)
     neural.train(reader, checkpoint=1)
     draw_source_data(reader)

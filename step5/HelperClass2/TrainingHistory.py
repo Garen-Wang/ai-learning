@@ -53,3 +53,6 @@ class TrainingHistory(object):
     def Dump(self, file_name):
         with open(file_name, 'wb') as f:
             return pickle.dump(f)
+
+    def GetEpochNumber(self):
+        return self.epoch_seq[-1]

@@ -2,13 +2,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-from step4.HelperClass2.TrainingHistory import *
-from step4.HelperClass2.HyperParameters import *
-from step4.HelperClass2.DataReader_2_0 import *
-from step4.HelperClass2.ClassifierFunction import *
-from step4.HelperClass2.ActivatorFunction import *
-from step4.HelperClass2.LossFunction import *
-from step4.HelperClass2.WeightBias import *
+from step5.HelperClass2.TrainingHistory import *
+from step5.HelperClass2.HyperParameters import *
+from step5.HelperClass2.DataReader_2_0 import *
+from step5.HelperClass2.ClassifierFunction import *
+from step5.HelperClass2.ActivatorFunction import *
+from step5.HelperClass2.LossFunction import *
+from step5.HelperClass2.WeightBias import *
 
 
 class NeuralNet(object):
@@ -152,3 +152,6 @@ class NeuralNet(object):
 
     def GetTrainingHistory(self):
         return self.loss_trace
+
+    def GetEpochNumber(self):
+        return self.loss_trace.GetEpochNumber()

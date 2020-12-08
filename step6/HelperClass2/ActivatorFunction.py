@@ -1,6 +1,5 @@
 import numpy as np
 
-
 class Activator(object):
     def forward(self, z):
         pass
@@ -47,6 +46,7 @@ class Relu(Activator):
     def backward(self, z, a, delta):
         da = np.zeros(z.shape)
         da[z > 0] = 1
-        dz = da * delta
-        # dz = np.multiply(delta, da)
+        dz = np.multiply(delta, da)
         return dz, da
+
+

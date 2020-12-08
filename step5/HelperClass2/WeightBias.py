@@ -1,7 +1,7 @@
 import numpy as np
 from pathlib import Path
 
-from step4.HelperClass2.EnumDef import *
+from step5.HelperClass2.EnumDef import *
 
 
 class WeightBias(object):

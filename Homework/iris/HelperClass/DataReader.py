@@ -1,15 +1,15 @@
 import numpy as np
+import pandas as pd
 from pathlib import Path
 
-from step6.HelperClass2.EnumDef import *
+from Homework.iris.HelperClass.EnumDef import *
 
 
+# here we ignore test data for the lack of data...
 class DataReader(object):
-    def __init__(self, train_file_name, test_file_name):
+    def __init__(self, train_file_name):
         self.train_file_name = train_file_name
-        self.test_file_name = test_file_name
         self.num_train = 0
-        self.num_test = 0
         self.num_validation = 0
         self.num_feature = 0
         self.num_category = 0
@@ -17,40 +17,29 @@ class DataReader(object):
         self.YTrain = None
         self.XTrainRaw = None
         self.YTrainRaw = None
-        self.XTest = None
-        self.YTest = None
-        self.XTestRaw = None
-        self.YTestRaw = None
         self.XVld = None
         self.YVld = None
 
     def ReadData(self):
         train_file = Path(self.train_file_name)
         if train_file.exists():
-            data = np.load(self.train_file_name)
-            self.XTrainRaw = data['data']
-            self.YTrainRaw = data['label']
+            data = pd.read_csv(self.train_file_name)
+            self.XTrainRaw = np.vstack((np.array(data['sepal length']), np.array(data['sepal width']),
+                                        np.array(data['petal length']), np.array(data['petal width']))).T
             self.num_train = self.XTrainRaw.shape[0]
             self.num_feature = self.XTrainRaw.shape[1]
-            self.num_category = len(np.unique(self.YTrainRaw))
+            self.YTrainRaw = np.zeros((self.num_train, 1))
+            for i in range(self.num_train):
+                if data['class'][i] == 'Iris-setosa':
+                    self.YTrainRaw[i, 0] = 1
+                elif data['class'][i] == 'Iris-versicolor':
+                    self.YTrainRaw[i, 0] = 2
+                elif data['class'][i] == 'Iris-virginica':
+                    self.YTrainRaw[i, 0] = 3
+            self.num_category = 3
 
             self.XTrain = self.XTrainRaw
             self.YTrain = self.YTrainRaw
-        else:
-            raise Exception('GG')
-
-        test_file = Path(self.test_file_name)
-        if test_file.exists():
-            data = np.load(self.test_file_name)
-            self.XTestRaw = data['data']
-            self.YTestRaw = data['label']
-            self.num_test = self.XTestRaw.shape[0]
-
-            self.XTest = self.XTestRaw
-            self.YTest = self.YTestRaw
-
-            self.XVld = self.XTest
-            self.YVld = self.YTest
         else:
             raise Exception('GG')
 
@@ -68,10 +57,11 @@ class DataReader(object):
         return XNew
 
     def NormalizeX(self):
-        XMerge = np.vstack((self.XTrainRaw, self.XTestRaw))
-        XMergeNorm = self.__NormalizeX(XMerge)
-        self.XTrain = XMergeNorm[:self.num_train, :]
-        self.XTest = XMergeNorm[self.num_train:, :]
+        self.XTrain = self.__NormalizeX(self.XTrainRaw)
+        # XMerge = np.vstack((self.XTrainRaw, self.XTestRaw))
+        # XMergeNorm = self.__NormalizeX(XMerge)
+        # self.XTrain = XMergeNorm[:self.num_train, :]
+        # self.XTest = XMergeNorm[self.num_train:, :]
 
     def __NormalizeY(self, Y):
         YNorm = np.zeros((2, 1))
@@ -100,16 +90,17 @@ class DataReader(object):
 
     def NormalizeY(self, net_type, base=0):
         if net_type == NetType.Fitting:
-            YMerge = np.vstack((self.YTrainRaw, self.YTestRaw))
-            YMergeNorm = self.__NormalizeY(YMerge)
-            YTrain = YMergeNorm[:self.num_train, :]
-            YTest = YMergeNorm[self.num_train:, :]
+            self.YTrain = self.__NormalizeY(self.YTrainRaw)
+            # YMerge = np.vstack((self.YTrainRaw, self.YTestRaw))
+            # YMergeNorm = self.__NormalizeY(YMerge)
+            # self.YTrain = YMergeNorm[:self.num_train, :]
+            # self.YTest = YMergeNorm[self.num_train:, :]
         elif net_type == NetType.BinaryClassifier:
             self.YTrain = self.__ToZeroOne(self.YTrainRaw, base)
-            self.YTest = self.__ToZeroOne(self.YTestRaw, base)
+            # self.YTest = self.__ToZeroOne(self.YTestRaw, base)
         elif net_type == NetType.MultipleClassifier:
             self.YTrain = self.__ToOneHot(self.YTrainRaw, base)
-            self.YTest = self.__ToOneHot(self.YTestRaw, base)
+            # self.YTest = self.__ToOneHot(self.YTestRaw, base)
 
     def GenerateValidationSet(self, k=10):
         self.num_validation = int(self.num_train / k)
@@ -126,8 +117,8 @@ class DataReader(object):
         batch_y = self.YTrain[start:end, :]
         return batch_x, batch_y
 
-    def GetTestSet(self):
-        return self.XTest, self.YTest
+    # def GetTestSet(self):
+    #     return self.XTest, self.YTest
 
     def GetValidationSet(self):
         return self.XVld, self.YVld

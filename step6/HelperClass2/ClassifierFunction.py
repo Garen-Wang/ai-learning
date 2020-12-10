@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class Classifier(object):
     def forward(self, z):
         pass
@@ -17,5 +18,3 @@ class Softmax(Classifier):
         exp_z = np.exp(shift_z)
         a = exp_z / np.sum(exp_z, axis=1, keepdims=True)
         return a
-
-

@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 
+
 class TrainingHistory(object):
     def __init__(self):
         self.loss_train = []
@@ -21,7 +22,7 @@ class TrainingHistory(object):
         self.iteration_seq.append(total_iteration)
         self.epoch_seq.append(epoch)
 
-    def ShowLossHistory(self, params, xmin=None, xmax=None, ymin=None, ymax=None):
+    def ShowLossHistory(self, params):
         plt.figure(figsize=(12, 5))
         axes = plt.subplot(1, 2, 1)
         p1, = axes.plot(self.epoch_seq, self.loss_train)
@@ -38,7 +39,7 @@ class TrainingHistory(object):
         axes.set_title('Accuracy')
         axes.set_xlabel('epoch')
         axes.set_ylabel('accuracy')
-        
+
         title = params.toString()
         plt.suptitle(title)
         plt.show()
@@ -61,5 +62,3 @@ class TrainingHistory(object):
             count = total
         tmp = self.loss_vld[total - count: total]
         return sum(tmp) / count
-
-

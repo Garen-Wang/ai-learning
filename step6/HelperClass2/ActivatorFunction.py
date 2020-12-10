@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class Activator(object):
     def forward(self, z):
         pass
@@ -48,5 +49,3 @@ class Relu(Activator):
         da[z > 0] = 1
         dz = np.multiply(delta, da)
         return dz, da
-
-

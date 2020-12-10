@@ -10,11 +10,9 @@ class TrainingHistory(object):
         self.loss_history.append(loss)
         self.iteration.append(iteration)
 
-    def show(self, params, xmin=None, xmax=None, ymin=None, ymax=None):
+    def show(self, params):
         plt.plot(self.iteration, self.loss_history)
         plt.title(params.getTitle())
         plt.xlabel('iteration')
         plt.ylabel('loss')
-        if xmin is not None and ymin is not None:
-            plt.axis([xmin, xmax, ymin, ymax])
         plt.show()

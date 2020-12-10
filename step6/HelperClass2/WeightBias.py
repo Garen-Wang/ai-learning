@@ -34,7 +34,7 @@ class WeightBias(object):
             self.__CreateNew()
 
     def __CreateNew(self):
-        self.W, self.B = self.InitialParameters()
+        self.W, self.B = self.InitialParameters(self.num_input, self.num_output, self.init_method)
         self.__SaveInitialValues()
 
     def __LoadInitialValues(self):
@@ -42,6 +42,7 @@ class WeightBias(object):
         data = np.load(file_name)
         self.W = data['weights']
         self.B = data['bias']
+        print(self.W, self.B)
 
     def __SaveInitialValues(self):
         file_name = "{}/{}.npz".format(self.folder, self.initial_value_filename)
@@ -59,13 +60,15 @@ class WeightBias(object):
 
 
     @staticmethod
-    def __InitialParameters(num_input, num_output, init_method):
+    def InitialParameters(num_input, num_output, init_method):
         if init_method == InitialMethod.Zero:
             W = np.zeros((num_input, num_output))
         elif init_method == InitialMethod.Normal:
             W = np.random.normal((num_input, num_output))
         elif init_method == InitialMethod.Xavier:
-            W = np.random.uniform(-np.sqrt(6 / (num_input + num_output)), np.sqrt(6 / (num_input + num_output)), size=(num_input, num_output))
+            W = np.random.uniform(-np.sqrt(6 / (num_input + num_output)),
+                                  np.sqrt(6 / (num_input + num_output)),
+                                  size=(num_input, num_output))
 
         B = np.zeros((1, num_output))
         return W, B

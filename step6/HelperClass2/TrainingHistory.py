@@ -43,14 +43,6 @@ class TrainingHistory(object):
         plt.suptitle(title)
         plt.show()
 
-    def ShowLossHistoryOnly(self, axes, params, xmin=None, xmax=None, ymin=None, ymax=None):
-        p1, = axes.plot(self.epoch_seq, self.loss_train)
-        p2, = axes.plot(self.epoch_seq, self.loss_vld)
-        title = params.toString()
-        axes.set_title(title)
-        axes.set_xlabel('epoch')
-        axes.set_ylabel('loss')
-
     def Load(self, file_name):
         with open(file_name, 'rb') as f:
             a = pickle.load(f)
@@ -59,7 +51,15 @@ class TrainingHistory(object):
     def Dump(self, file_name):
         with open(file_name, 'wb') as f:
             pickle.dump(f)
-        
 
+    def GetEpochNumber(self):
+        return self.epoch_seq[-1]
+
+    def GetLatestAverageLoss(self, count):
+        total = len(self.loss_vld)
+        if count > total:
+            count = total
+        tmp = self.loss_vld[total - count: total]
+        return sum(tmp) / count
 
 

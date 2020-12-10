@@ -4,23 +4,22 @@ import math
 
 from step6.HelperClass2.ActivatorFunction import *
 from step6.HelperClass2.ClassifierFunction import *
-from step6.HelperClass2.DataReader import *
-from step6.HelperClass2.EnumDef import *
-from step6.HelperClass2.HyperParameters import *
 from step6.HelperClass2.LossFunction import *
 from step6.HelperClass2.TrainingHistory import *
+from step6.HelperClass2.HyperParameters import *
 from step6.HelperClass2.WeightBias import *
+
 
 class NeuralNet(object):
     def __init__(self, params, model_name):
         self.params = params
         self.model_name = model_name
         self.subfolder = os.getcwd() + '/' + self.__create_subfolder()
-        
+
         self.wb1 = WeightBias(params.num_input, params.num_hidden, params.init_method, params.eta)
         self.wb2 = WeightBias(params.num_hidden, params.num_output, params.init_method, params.eta)
-        wb1.InitializeWeights(self.subfolder, False)
-        wb2.InitializeWeights(self.subfolder, False)
+        self.wb1.InitializeWeights(self.subfolder, False)
+        self.wb2.InitializeWeights(self.subfolder, False)
 
     def __create_subfolder(self):
         path = self.model_name.strip()
@@ -52,9 +51,9 @@ class NeuralNet(object):
         self.wb2.dB = np.sum(dZ2, axis=0, keepdims=True) / m
         dA1 = np.dot(dZ2, self.wb2.W.T)
         dZ1, _ = Sigmoid().backward(None, self.A1, dA1)
-        self.wb1.dW = np.dot(self.X.T, dZ1) / m
+        self.wb1.dW = np.dot(batch_x.T, dZ1) / m
         self.wb1.dB = np.sum(dZ1, axis=0, keepdims=True) / m
-    
+
     def update(self):
         self.wb1.update()
         self.wb2.update()
@@ -67,7 +66,7 @@ class NeuralNet(object):
         self.loss_history = TrainingHistory()
         self.loss_func = LossFunction(self.params.net_type)
         if self.params.batch_size == -1:
-            self.params.batch_size = self.reader.num_train
+            self.params.batch_size = reader.num_train
         max_iteration = math.ceil(reader.num_train / self.params.batch_size)
         checkpoint_iteration = int(max_iteration * checkpoint)
         need_stop = False
@@ -82,10 +81,10 @@ class NeuralNet(object):
 
                 total_iteration = epoch * max_iteration + iteration
                 if (total_iteration + 1) % checkpoint_iteration == 0:
-                    need_stop = self.CheckErrorAndLoss()
+                    need_stop = self.CheckErrorAndLoss(reader, batch_x, batch_y, epoch, total_iteration)
                     if need_stop:
                         break
-                    
+
             if need_stop:
                 break
         self.SaveResult()
@@ -95,7 +94,7 @@ class NeuralNet(object):
             print(accuracy)
 
     def CheckErrorAndLoss(self, reader, train_x, train_y, epoch, total_iteration):
-        print('epoch=%d, total_iteration=%d' %(epoch, total_iteration))
+        print('epoch=%d, total_iteration=%d' % (epoch, total_iteration))
         train_z = self.inference(train_x)
         loss_train = self.loss_func.CheckLoss(train_z, train_y)
         accuracy_train = self.__CalAccuracy(train_z, train_y)
@@ -110,14 +109,14 @@ class NeuralNet(object):
         self.loss_history.Add(loss_train, accuracy_train, loss_vld, accuracy_vld, total_iteration, epoch)
         return loss_vld <= self.params.eps
 
-    def Test(self):
+    def Test(self, reader):
         X, Y = reader.GetTestSet()
         A = self.inference(X)
         correct = self.__CalAccuracy(A, Y)
         print(correct)
 
     def __CalAccuracy(self, A, Y):
-        m = a.shape[0]
+        m = A.shape[0]
         if self.params.net_type == NetType.Fitting:
             var = np.var(Y)
             mse = np.sum((A - Y) ** 2) / m
@@ -148,3 +147,9 @@ class NeuralNet(object):
 
     def GetTrainingHistory(self):
         return self.loss_history
+
+    def GetEpochNumber(self):
+        return self.loss_history.GetEpochNumber()
+
+    def GetLatestAverageLoss(self, count=10):
+        return self.loss_history.GetLatestAverageLoss(count)

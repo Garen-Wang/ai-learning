@@ -3,6 +3,7 @@ from pathlib import Path
 
 from step6.HelperClass2.EnumDef import *
 
+
 class DataReader(object):
     def __init__(self, train_file_name, test_file_name):
         self.train_file_name = train_file_name
@@ -54,7 +55,7 @@ class DataReader(object):
             raise Exception('GG')
 
     def __NormalizeX(self, XRaw):
-        XNew = np.zeros(XRaw.shape)
+        XNew = np.zeros_like(XRaw)
         XNorm = np.zeros((2, self.num_feature))
         for i in range(self.num_feature):
             X = XRaw[:, i]
@@ -78,7 +79,7 @@ class DataReader(object):
         min_value = np.min(Y)
         YNorm[0, 0] = min_value
         YNorm[1, 0] = max_value - min_value
-        YNew = (Y - YNorm[0, 0]) / Ynorm[1, 0]
+        YNew = (Y - YNorm[0, 0]) / YNorm[1, 0]
         return YNew
 
     def __ToZeroOne(self, Y, negative_label=0, positive_label=1, negative_value=0, positive_value=1):
@@ -91,7 +92,7 @@ class DataReader(object):
         return YNew
 
     def __ToOneHot(self, Y, base=0):
-        YNew = np.zeros((Y, self.num_category))
+        YNew = np.zeros((Y.shape[0], self.num_category))
         for i in range(Y.shape[0]):
             n = int(Y[i, 0])
             YNew[i, n - base] = 1
@@ -101,8 +102,8 @@ class DataReader(object):
         if net_type == NetType.Fitting:
             YMerge = np.vstack((self.YTrainRaw, self.YTestRaw))
             YMergeNorm = self.__NormalizeY(YMerge)
-            YTrain = YMergeNorm[:self.num_train, :]
-            YTest = YMergeNorm[self.num_train:, :]
+            self.YTrain = YMergeNorm[:self.num_train, :]
+            self.YTest = YMergeNorm[self.num_train:, :]
         elif net_type == NetType.BinaryClassifier:
             self.YTrain = self.__ToZeroOne(self.YTrainRaw, base)
             self.YTest = self.__ToZeroOne(self.YTestRaw, base)
@@ -115,9 +116,9 @@ class DataReader(object):
         self.num_train -= self.num_validation
         self.XVld = self.XTrain[:self.num_validation]
         self.YVld = self.YTrain[:self.num_validation]
-        self.XTrain = self.XTrain[:self.num_validation]
-        self.YTrain = self.YTrain[:self.num_validation]
-    
+        self.XTrain = self.XTrain[self.num_validation:]
+        self.YTrain = self.YTrain[self.num_validation:]
+
     def GetBatchTrainSamples(self, batch_size, iteration):
         start = batch_size * iteration
         end = start + batch_size
@@ -139,5 +140,3 @@ class DataReader(object):
         YP = np.random.permutation(self.YTrain)
         self.XTrain = XP
         self.YTrain = YP
-        
-

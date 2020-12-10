@@ -24,7 +24,7 @@ class DataReader(object):
             self.xTrain = self.xRaw
             self.yTrain = self.xRaw
         except:
-            print("cannot find dataset!")
+            print("FILE NOT FOUND!")
 
     def normalizeX(self):
         self.xNorm = np.zeros((self.num_train, self.xRaw.shape[1]))
@@ -36,13 +36,6 @@ class DataReader(object):
             self.xNorm[i, 1] = max_value - min_value
             new_col = (col - self.xNorm[i, 0]) / self.xNorm[i, 1]
             self.xTrain[:, i] = new_col
-
-    def normalizePredicateData(self, x):
-        xx = np.zeros(x.shape)
-        for i in range(x.shape[1]):
-            col = x[:, i]
-            xx[:, i] = (col - self.xNorm[i, 0]) / self.xNorm[i, 1]
-        return xx
 
     def normalizeY(self):
         self.yNorm = np.zeros((1, 2))

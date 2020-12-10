@@ -1,6 +1,7 @@
 import numpy as np
 
-from step6.HelperClass2.EnumDef import *
+from Homework.iris.HelperClass.EnumDef import *
+
 
 class LossFunction(object):
     def __init__(self, net_type):
@@ -31,6 +32,6 @@ class LossFunction(object):
             loss = self.CE2(A, Y, m)
         elif self.net_type == NetType.MultipleClassifier:
             loss = self.CE3(A, Y, m)
+        else:
+            loss = 233
         return loss
-
-

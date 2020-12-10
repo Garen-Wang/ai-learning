@@ -1,4 +1,3 @@
-
 class HyperParameters(object):
     def __init__(self, input_size, output_size, eta=0.1, max_epoch=100, batch_size=10, eps=1e-4):
         self.input_size = input_size

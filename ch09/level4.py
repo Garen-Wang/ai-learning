@@ -5,8 +5,8 @@ from mpl_toolkits.mplot3d import Axes3D
 from ch09.HelperClass2.NeuralNet import *
 from ch09.HelperClass2.DataReader_2_0 import *
 
-train_file_name = '../ai-data/Data/ch09.train.npz'
-test_file_name = '../ai-data/Data/ch09.test.npz'
+train_file_name = '../Data/ch09.train.npz'
+test_file_name = '../Data/ch09.test.npz'
 
 
 def ShowResult(net, reader, title):

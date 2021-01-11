@@ -1,7 +1,7 @@
 from helper2.DataReader import *
 import numpy as npy
 
-file_name = '../ai-data/Data/ch05.npz'
+file_name = '../Data/ch05.npz'
 if __name__ == '__main__':
     reader = DataReader(file_name)
     reader.readData()

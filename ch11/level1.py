@@ -6,8 +6,8 @@ from ch11.HelperClass2.DataReader import *
 from ch11.HelperClass2.HyperParameters import *
 from ch11.HelperClass2.Visualizer import *
 
-train_file_name = '../ai-data/Data/ch11.train.npz'
-test_file_name = '../ai-data/Data/ch11.test.npz'
+train_file_name = '../Data/ch11.train.npz'
+test_file_name = '../Data/ch11.test.npz'
 
 if __name__ == '__main__':
     reader = DataReader(train_file_name, test_file_name)

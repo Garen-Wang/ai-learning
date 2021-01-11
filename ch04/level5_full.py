@@ -1,6 +1,6 @@
 
 from helper1.NeuralNet import *
-file_name = '../ai-data/Data/ch04.npz'
+file_name = '../Data/ch04.npz'
 
 def showResult(neural, reader):
     X, Y = reader.getWholeTrainSamples()

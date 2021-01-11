@@ -2,7 +2,7 @@ import numpy as npy
 import matplotlib.pyplot as plt
 from helper3.NeuralNet import *
 
-file_name = '../ai-data/Data/ch06.npz'
+file_name = '../Data/ch06.npz'
 
 def draw_split_line(neural):
     w_real = -neural.W[0, 0] / neural.W[1, 0]

@@ -1,6 +1,6 @@
 import numpy as npy
 from helper3.NeuralNet import *
-file_name = '../ai-data/Data/ch06.npz'
+file_name = '../Data/ch06.npz'
 
 if __name__ == '__main__':
     reader = DataReader(file_name)

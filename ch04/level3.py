@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from helper1.DataReader import *
 
-file_name = '../ai-data/Data/ch04.npz'
+file_name = '../Data/ch04.npz'
 
 class NeuralNet(object):
     def __init__(self, eta):

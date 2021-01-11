@@ -5,8 +5,8 @@ from ch11.HelperClass2.NeuralNet import *
 from ch11.HelperClass2.Visualizer import *
 from ch11.HelperClass2.DataReader import *
 
-train_file_name = '../ai-data/Data/ch11.train.npz'
-test_file_name = '../ai-data/Data/ch11.test.npz'
+train_file_name = '../Data/ch11.train.npz'
+test_file_name = '../Data/ch11.test.npz'
 
 
 

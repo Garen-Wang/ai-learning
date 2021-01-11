@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 from helper4.NeuralNet import *
 
-file_name = '../ai-data/Data/ch07.npz'
+file_name = '../Data/ch07.npz'
 
 if __name__ == '__main__':
     reader = DataReader(file_name)

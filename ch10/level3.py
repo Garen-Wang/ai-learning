@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 from ch10.HelperClass2.NeuralNet import *
 from ch10.HelperClass2.DataReader_2_0 import *
 
-train_file_name = '../ai-data/Data/ch10.train.npz'
-test_file_name = '../ai-data/Data/ch10.test.npz'
+train_file_name = '../Data/ch10.train.npz'
+test_file_name = '../Data/ch10.test.npz'
 
 
 if __name__ == '__main__':

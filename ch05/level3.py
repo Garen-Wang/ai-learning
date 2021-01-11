@@ -4,7 +4,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from helper2.NeuralNet import *
 
 
-file_name = '../ai-data/Data/ch05.npz'
+file_name = '../Data/ch05.npz'
 
 
 def showResult(neural, reader):

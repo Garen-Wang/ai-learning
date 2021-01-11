@@ -5,7 +5,7 @@ import math
 
 from helper4.NeuralNet import *
 from helper4.visualizer import *
-file_name = '../ai-data/Data/ch07.npz'
+file_name = '../Data/ch07.npz'
 
 def showResult(neural, reader, X, output):
     fig = plt.figure(figsize=(6, 6))

@@ -2,10 +2,10 @@ import numpy as np
 import struct
 from ch12.helperClass.DataReader import DataReader
 
-train_image_filename  = '../../ai-data/Data/train-images-10'
-train_label_filename  = '../../ai-data/Data/train-labels-10'
-test_image_filename  = '../../ai-data/Data/test-images-10'
-test_label_filename  = '../../ai-data/Data/test-labels-10'
+train_image_filename  = '../../Data/train-images-10'
+train_label_filename  = '../../Data/train-labels-10'
+test_image_filename  = '../../Data/test-images-10'
+test_label_filename  = '../../Data/test-labels-10'
 
 
 class ImageDataReader(DataReader):
